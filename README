@@ -14,5 +14,5 @@ Keep in mind that the PayPal sandbox can be pretty slow. So you might get
 timeouts on validation messaages (GAE has a set 10s max timeout)
 
 
-Feel free to fork this project and improove it. I'd love to see some cooperation
+Feel free to fork this project and improve it. I'd love to see some cooperation
 on taming the PayPal beast :)   
