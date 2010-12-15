@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Text;
+import com.streamhead.gae.paypal.variable.PaymentStatus;
 import com.streamhead.gae.paypal.variable.TransactionType;
 
 public class IPNMessage implements Serializable {
@@ -34,7 +35,12 @@ public class IPNMessage implements Serializable {
 	private boolean validated = false;
 	private Text fullMessage;
 	private TransactionType transactionType;
+	private PaymentStatus paymentStatus;
+	private String mcGross;
+	private String mcCurrency;
 
+	private IPNMessage() { }
+	
 	public Date getDate() {
 		return date;
 	}
@@ -50,20 +56,28 @@ public class IPNMessage implements Serializable {
 	public boolean isValidated() {
 		return validated;
 	}
+	
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
+	}
+	
+	public String getMcGross() {
+		return mcGross;
+	}
+
+	public String getMcCurrency() {
+		return mcCurrency;
+	}
 
 	public static class Builder {
 		private IPNMessage message = new IPNMessage();
 		
-		public Builder(Map<String, String[]> nvp) {
+		public Builder(Map<String, String> nvp) {
 			StringBuffer msg = new StringBuffer();
-			for(Map.Entry<String, String[]> entry : nvp.entrySet()) {
+			for(Map.Entry<String, String> entry : nvp.entrySet()) {
 				msg.append(entry.getKey());
 				msg.append("=");
-				for(int i=0; i<entry.getValue().length; i++) {
-					msg.append(entry.getValue()[i]);
-					if(i<entry.getValue().length-1)
-						msg.append(",");
-				}
+				msg.append(entry.getValue());
 				msg.append("\n");
 			}
 			message.fullMessage = new Text(msg.toString());
@@ -71,6 +85,21 @@ public class IPNMessage implements Serializable {
 		
 		public Builder transactionType(TransactionType transactionType) {
 			this.message.transactionType = transactionType;
+			return this;
+		}
+		
+		public Builder paymentStatus(PaymentStatus paymentStatus) {
+			this.message.paymentStatus = paymentStatus;
+			return this;
+		}
+		
+		public Builder mcGross(String mcGross) {
+			this.message.mcGross = mcGross;
+			return this;
+		}
+		
+		public Builder mcCurrency(String mcCurrency) {
+			this.message.mcCurrency = mcCurrency;
 			return this;
 		}
 		

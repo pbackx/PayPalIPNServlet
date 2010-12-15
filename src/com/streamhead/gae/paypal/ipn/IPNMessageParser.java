@@ -18,19 +18,17 @@ package com.streamhead.gae.paypal.ipn;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.streamhead.gae.paypal.ipn.IPNMessage.Builder;
+import com.streamhead.gae.paypal.variable.PaymentStatus;
 import com.streamhead.gae.paypal.variable.TransactionType;
 
 public class IPNMessageParser {
 
-	private Map<String, String[]> nvp;
+	private Map<String, String> nvp;
 	private boolean validated = false;
 	
-	@SuppressWarnings("unchecked")
-	public IPNMessageParser(HttpServletRequest req, boolean validated) {
-		this.nvp = (Map<String, String[]>)req.getParameterMap();
+	public IPNMessageParser(Map<String, String> nvp, boolean validated) {
+		this.nvp = nvp;
 		this.validated = validated;
 	}
 
@@ -38,17 +36,23 @@ public class IPNMessageParser {
 		IPNMessage.Builder builder = new IPNMessage.Builder(nvp);
 		if(validated)
 			builder.validated();
-		for(Map.Entry<String, String[]> param : nvp.entrySet()) {
+		for(Map.Entry<String, String> param : nvp.entrySet()) {
 			addVariable(builder, param);
 		}
 		return builder.build();
 	}
 
-	private void addVariable(Builder builder, Entry<String, String[]> param) {
+	private void addVariable(Builder builder, Entry<String, String> param) {
 		String name = param.getKey();
-		String value = param.getValue()[0];
+		String value = param.getValue();
 		if(name.equals("txn_type")) {
 			builder.transactionType(TransactionType.valueOf(value));
+		} else if(name.equals("payment_status")) {
+			builder.paymentStatus(PaymentStatus.valueOf(value));
+		} else if(name.equals("mc_gross")) {
+			builder.mcGross(value);
+		} else if(name.equals("mc_currency")) {
+			builder.mcCurrency(value);
 		}
 	}
 

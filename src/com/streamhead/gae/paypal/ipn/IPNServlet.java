@@ -19,15 +19,11 @@
 */
 package com.streamhead.gae.paypal.ipn;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +32,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import paypalnvp.core.HttpPost;
+import paypalnvp.core.Transport;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -48,6 +47,7 @@ public class IPNServlet extends HttpServlet {
 	private static final PayPalEnvironment environment = PayPalEnvironment.SANDBOX;
 	private static final String verified = "VERIFIED";
 	
+	private final Transport transport = new HttpPost();
     private final Objectify ofy;
     
     public IPNServlet() {
@@ -61,12 +61,31 @@ public class IPNServlet extends HttpServlet {
 		log.info("IPN received");
 
 		final IPNNotificationValidation validation = new IPNNotificationValidation(req);
-		IPNMessage message = new IPNMessageParser(req, validate(validation)).parse();
+		IPNMessage message = new IPNMessageParser(
+				nvp(req), 
+				validate(validation)
+				).parse();
 		log.info("parsed message: " + message);
 		ofy.put(message);
 	}
+
+	@SuppressWarnings("unchecked")
+	protected Map<String, String> nvp(HttpServletRequest req) {
+		Map<String, String[]> params = (Map<String, String[]>)req.getParameterMap();
+		Map<String, String> nvp = new HashMap<String, String>();
+		for(Map.Entry<String, String[]> entry : params.entrySet()) {
+			String value = "";
+			for(int i=0; i<entry.getValue().length; i++) {
+				value += entry.getValue()[i];
+				if(i<entry.getValue().length-1)
+					value += ",";
+			}
+			nvp.put(entry.getKey(), value);
+		}
+		return nvp;
+	}
 	
-	private boolean validate(IPNNotificationValidation validation) {
+	protected boolean validate(IPNNotificationValidation validation) {
         StringBuffer nvpString = new StringBuffer();
         String encoding = "UTF-8";
         try {
@@ -83,7 +102,7 @@ public class IPNServlet extends HttpServlet {
         try {
         	log.fine("Sending request " + nvpString.toString());
         	log.fine("To URL " + validation.getUrl(environment));
-            response = getResponse(new URL(validation.getUrl(environment)), nvpString.toString());
+            response = transport.getResponse(validation.getUrl(environment), nvpString.toString());
         } catch (MalformedURLException ex) {
             log.log(Level.SEVERE, null, ex);
         }
@@ -95,35 +114,5 @@ public class IPNServlet extends HttpServlet {
         }
         
         return false;
-	}
-	
-	public String getResponse(URL url, String msg) throws MalformedURLException {
-		URLConnection connection;
-		StringBuffer response = new StringBuffer();
-		try {
-			connection = url.openConnection();
-			connection.setDoOutput(true);
-			connection.setConnectTimeout(10000);
-			connection.setReadTimeout(10000);
-
-			/* write request */
-			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-			writer.write(msg);
-			writer.flush();
-			writer.close();
-
-			/* read response */
-			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String line;
-			while((line = reader.readLine()) != null) {
-				response.append(line);
-			}
-			reader.close();
-		} catch (IOException ex) {
-			log.log(Level.SEVERE, null, ex);
-		}
-		
-		/* return response */
-		return response.toString();
 	}
 }
