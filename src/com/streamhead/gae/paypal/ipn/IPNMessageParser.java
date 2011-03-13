@@ -56,7 +56,7 @@ public class IPNMessageParser {
 		} else if(name.equals("item_number")) {
 			builder.itemNumber(value);
 		} else if(name.equals("custom")) {
-			builder.itemNumber(value);
+			builder.custom(value);
 		}
 	}
 
