@@ -38,6 +38,8 @@ public class IPNMessage implements Serializable {
 	private PaymentStatus paymentStatus;
 	private String mcGross;
 	private String mcCurrency;
+	private String custom;
+	private String itemNumber;
 
 	private IPNMessage() { }
 	
@@ -67,6 +69,14 @@ public class IPNMessage implements Serializable {
 
 	public String getMcCurrency() {
 		return mcCurrency;
+	}
+
+	public String getCustom() {
+		return custom;
+	}
+
+	public String getItemNumber() {
+		return itemNumber;
 	}
 
 	public static class Builder {
@@ -108,9 +118,19 @@ public class IPNMessage implements Serializable {
 			return this;
 		}
 		
+		public Builder custom(String value) {
+			this.message.custom = value;
+			return this;
+		}
+
+		public Builder itemNumber(String itemNumber) {
+			this.message.itemNumber = itemNumber;
+			return this;
+		}
 		public IPNMessage build() {
 			return message;
 		}
+
 	}
 
 	@Override

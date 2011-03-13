@@ -53,6 +53,10 @@ public class IPNMessageParser {
 			builder.mcGross(value);
 		} else if(name.equals("mc_currency")) {
 			builder.mcCurrency(value);
+		} else if(name.equals("item_number")) {
+			builder.itemNumber(value);
+		} else if(name.equals("custom")) {
+			builder.itemNumber(value);
 		}
 	}
 
