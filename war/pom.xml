@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>com.pow.paypal</groupId>
+		<artifactId>pow-paypal</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.pow.paypal</groupId>
+	<artifactId>pow-paypal-war</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>Powered by Reindeer PayPal standalond WAR</name>
+	<description>This is the most basic IPN servlet you can run. 
+    You probably don't need this WAR, but will want to integrate the core JAR in your project.</description>
+	<url>http://www.streamhead.com/java-paypal-ipn-servlet/</url>
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<url>http://github.com/pbackx/PayPalIPNServlet</url>
+		<connection>git@github.com:pbackx/PayPalIPNServlet.git</connection>
+	</scm>
+	<developers>
+		<developer>
+			<id>pbackx</id>
+			<name>Peter Backx</name>
+			<email>peter.backx@gmail.com</email>
+			<url>http://www.streamhead.com</url>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<properties>
+		<gae.port>8888</gae.port>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.pow.paypal</groupId>
+			<artifactId>pow-paypal-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>pow-paypal-war</finalName>
+		<plugins>
+			<!-- The actual maven-gae-plugin. Type "mvn gae:run" to run project, "mvn 
+				gae:deploy" to upload to GAE. -->
+			<plugin>
+				<groupId>net.kindleit</groupId>
+				<artifactId>maven-gae-plugin</artifactId>
+				<version>0.9.1</version>
+				<configuration>
+					<serverId>appengine.google.com</serverId>
+					<sdkDir>${gae.home}</sdkDir>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>net.kindleit</groupId>
+						<artifactId>gae-runtime</artifactId>
+						<version>${gae.version}</version>
+						<type>pom</type>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>
