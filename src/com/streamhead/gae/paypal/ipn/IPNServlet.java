@@ -49,9 +49,15 @@ public class IPNServlet extends HttpServlet {
 	
 	private final Transport transport = new HttpPost();
     private final Objectify ofy;
+
+    // Register in static initializer to prevent exceptions.
+    // java.lang.IllegalArgumentException: Attempted to register kind 'IPNMessage' twice
+    // http://code.google.com/p/objectify-appengine/wiki/BestPractices
+    static {
+        ObjectifyService.register(IPNMessage.class);
+    }
     
     public IPNServlet() {
-    	ObjectifyService.register(IPNMessage.class);
     	ofy = ObjectifyService.begin();
     }
     

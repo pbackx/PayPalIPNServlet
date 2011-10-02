@@ -31,6 +31,10 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Window;
 
 public class PayPalApplication extends Application {
+
+  static {
+    ObjectifyService.register(IPNMessage.class);
+  }
 	
 	private static final long serialVersionUID = 1L;
 	protected static final PayPalEnvironment environment = PayPalEnvironment.SANDBOX;
@@ -82,7 +86,7 @@ public class PayPalApplication extends Application {
 	
 	private void loadIPNMessages() {
 		ipnTable.removeAllItems();
-		ObjectifyService.register(IPNMessage.class);
+
 		Query<IPNMessage> messages = ObjectifyService.begin().query(IPNMessage.class);
 		for(IPNMessage m : messages)
 		{
