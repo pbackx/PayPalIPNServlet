@@ -40,4 +40,25 @@ Build and run the example application
 
 1. `mvn clean install`
 2. `cd war`
-3. `mvn gae:run`   
+3. `mvn gae:run`
+
+
+Maven repository
+================
+
+The current snapshot is hosted on Sonatype's snapshot repository, so if you just want to use the project add this to your pom.xml:
+
+    <repositories>
+		<repository>
+			<id>sonatype-snapshots</id>
+			<name>Sonatype Open Source snapshot repository (for POW and MailJimp)</name>
+			<url>https://oss.sonatype.org/content/groups/public/</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>com.pow.paypal</groupId>
+			<artifactId>pow-paypal-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+    </dependencies>   
