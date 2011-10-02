@@ -20,6 +20,7 @@ Configure your Appengine SDK
 ---------------------------- 
 
 in .m2/settings.xml:
+
     <settings>
       <profiles>
         <profile>
