@@ -48,10 +48,9 @@
   
 	<dependencies>
 		<dependency>
-			<groupId>net.kindleit</groupId>
-			<artifactId>gae-runtime</artifactId>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-1.0-sdk</artifactId>
 			<version>${gae.version}</version>
-			<type>pom</type>
 		</dependency>
 
 		<dependency>
