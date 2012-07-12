@@ -44,9 +44,9 @@ public class IPNServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(IPNServlet.class.getName());
-	private static final PayPalEnvironment environment = PayPalEnvironment.SANDBOX;
 	private static final String verified = "VERIFIED";
-	
+
+	private PayPalEnvironment environment = PayPalEnvironment.SANDBOX;
 	private final Transport transport = new HttpPost();
     private final Objectify ofy;
 
@@ -121,4 +121,12 @@ public class IPNServlet extends HttpServlet {
         
         return false;
 	}
+
+	public PayPalEnvironment getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(PayPalEnvironment environment) {
+		this.environment = environment;
+	}	
 }
