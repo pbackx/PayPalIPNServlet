@@ -71,6 +71,10 @@ public class IPNMessageParser {
 			builder.itemNumber(value);
 		} else if(name.equals("custom")) {
 			builder.custom(value);
+		} else if(name.equals("txn_id")) {
+			builder.txnId(value);
+		} else if(name.equals("subscr_id")) {
+			builder.subscrId(value);
 		}
 	}
 

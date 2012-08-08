@@ -40,6 +40,8 @@ public class IPNMessage implements Serializable {
 	private String mcCurrency;
 	private String custom;
 	private String itemNumber;
+	private String txnId;
+	private String subscrId;
 
 	private IPNMessage() { }
 	
@@ -77,6 +79,14 @@ public class IPNMessage implements Serializable {
 
 	public String getItemNumber() {
 		return itemNumber;
+	}
+
+	public String getTxnId() {
+		return txnId;
+	}
+
+	public String getSubscrId() {
+		return subscrId;
 	}
 
 	public static class Builder {
@@ -127,6 +137,17 @@ public class IPNMessage implements Serializable {
 			this.message.itemNumber = itemNumber;
 			return this;
 		}
+		
+		public Builder txnId(String txnId) {
+			this.message.txnId = txnId;
+			return this;
+		}
+		
+		public Builder subscrId(String subscrId) {
+			this.message.subscrId = subscrId;
+			return this;
+		}
+		
 		public IPNMessage build() {
 			return message;
 		}
