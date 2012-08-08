@@ -17,6 +17,8 @@ package com.streamhead.gae.paypal.ipn;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.streamhead.gae.paypal.ipn.IPNMessage.Builder;
 import com.streamhead.gae.paypal.variable.PaymentStatus;
@@ -24,6 +26,8 @@ import com.streamhead.gae.paypal.variable.TransactionType;
 
 public class IPNMessageParser {
 
+	private static final Logger log = Logger.getLogger(IPNMessageParser.class.getName());
+	
 	private Map<String, String> nvp;
 	private boolean validated = false;
 	
@@ -46,9 +50,19 @@ public class IPNMessageParser {
 		String name = param.getKey();
 		String value = param.getValue();
 		if(name.equals("txn_type")) {
-			builder.transactionType(TransactionType.valueOf(value));
+			try {
+				builder.transactionType(TransactionType.valueOf(value));
+			} catch (IllegalArgumentException e) {
+				// Unknown transaction type
+				log.log(Level.SEVERE, "unknown txn_type received, please investigate", e);
+			}
 		} else if(name.equals("payment_status")) {
-			builder.paymentStatus(PaymentStatus.valueOf(value));
+			try {
+				builder.paymentStatus(PaymentStatus.valueOf(value));
+			} catch (IllegalArgumentException e) {
+				// Unknown payment status
+				log.log(Level.SEVERE, "unknown payment_status received, please investigate", e);
+			}
 		} else if(name.equals("mc_gross")) {
 			builder.mcGross(value);
 		} else if(name.equals("mc_currency")) {
