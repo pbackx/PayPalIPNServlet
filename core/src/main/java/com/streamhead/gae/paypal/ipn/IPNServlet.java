@@ -39,8 +39,6 @@ public class IPNServlet extends HttpServlet {
 	private static final long serialVersionUID = 2L;
 	private static final Logger log = Logger.getLogger(IPNServlet.class.getName());
 
-	protected final IPNMessageDao dao = new IPNMessageDao();
-
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -55,7 +53,7 @@ public class IPNServlet extends HttpServlet {
 
 		//store the unvalidated message
 		final IPNMessage message = new IPNMessageParser(nvp(req),	false).parse();
-		dao.doTransaction(new IPNMessageDao.Transactable() {
+		IPNMessageDao.repeatInTransaction(new IPNMessageDao.Transactable() {
 			@Override
 			public void run(IPNMessageDao daot) {
 				daot.ofy().put(message);
