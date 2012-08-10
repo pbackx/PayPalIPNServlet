@@ -11,7 +11,7 @@
 	<artifactId>pow-paypal-war</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Powered by Reindeer PayPal standalond WAR</name>
+	<name>Powered by Reindeer PayPal standalone WAR</name>
 	<description>This is the most basic IPN servlet you can run. 
     You probably don't need this WAR, but will want to integrate the core JAR in your project.</description>
 	<url>http://www.streamhead.com/java-paypal-ipn-servlet/</url>

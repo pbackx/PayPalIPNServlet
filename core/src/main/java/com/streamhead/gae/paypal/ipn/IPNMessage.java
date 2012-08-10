@@ -27,7 +27,7 @@ import com.streamhead.gae.paypal.variable.TransactionType;
 
 public class IPNMessage implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	@Id
 	private Long id;
@@ -59,6 +59,10 @@ public class IPNMessage implements Serializable {
 	
 	public boolean isValidated() {
 		return validated;
+	}
+	
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 	
 	public PaymentStatus getPaymentStatus() {
@@ -161,5 +165,91 @@ public class IPNMessage implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((custom == null) ? 0 : custom.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result
+				+ ((fullMessage == null) ? 0 : fullMessage.hashCode());
+		result = prime * result
+				+ ((itemNumber == null) ? 0 : itemNumber.hashCode());
+		result = prime * result
+				+ ((mcCurrency == null) ? 0 : mcCurrency.hashCode());
+		result = prime * result + ((mcGross == null) ? 0 : mcGross.hashCode());
+		result = prime * result
+				+ ((paymentStatus == null) ? 0 : paymentStatus.hashCode());
+		result = prime * result
+				+ ((subscrId == null) ? 0 : subscrId.hashCode());
+		result = prime * result
+				+ ((transactionType == null) ? 0 : transactionType.hashCode());
+		result = prime * result + ((txnId == null) ? 0 : txnId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IPNMessage other = (IPNMessage) obj;
+		if (custom == null) {
+			if (other.custom != null)
+				return false;
+		} else if (!custom.equals(other.custom))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (fullMessage == null) {
+			if (other.fullMessage != null)
+				return false;
+		} else if (!fullMessage.equals(other.fullMessage))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (itemNumber == null) {
+			if (other.itemNumber != null)
+				return false;
+		} else if (!itemNumber.equals(other.itemNumber))
+			return false;
+		if (mcCurrency == null) {
+			if (other.mcCurrency != null)
+				return false;
+		} else if (!mcCurrency.equals(other.mcCurrency))
+			return false;
+		if (mcGross == null) {
+			if (other.mcGross != null)
+				return false;
+		} else if (!mcGross.equals(other.mcGross))
+			return false;
+		if (paymentStatus != other.paymentStatus)
+			return false;
+		if (subscrId == null) {
+			if (other.subscrId != null)
+				return false;
+		} else if (!subscrId.equals(other.subscrId))
+			return false;
+		if (transactionType != other.transactionType)
+			return false;
+		if (txnId == null) {
+			if (other.txnId != null)
+				return false;
+		} else if (!txnId.equals(other.txnId))
+			return false;
+		if (validated != other.validated)
+			return false;
+		return true;
 	}
 }

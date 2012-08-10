@@ -32,10 +32,6 @@ import com.vaadin.ui.Window;
 
 public class PayPalApplication extends Application {
 
-  static {
-    ObjectifyService.register(IPNMessage.class);
-  }
-	
 	private static final long serialVersionUID = 1L;
 	protected static final PayPalEnvironment environment = PayPalEnvironment.SANDBOX;
 

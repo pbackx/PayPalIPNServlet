@@ -15,37 +15,61 @@
 */
 package com.streamhead.gae.paypal.ipn;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.servlet.http.HttpServletRequest;
+import paypalnvp.core.HttpPost;
+import paypalnvp.core.Transport;
 
 import com.streamhead.gae.paypal.PayPalEnvironment;
 
 public class IPNNotificationValidation {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
+	private static final Logger log = Logger.getLogger(IPNNotificationValidation.class.getName());
 
-	private Map<String, String> nvpReq = new HashMap<String,String>();
-	private String cmd = "_notify-validate";
+	private final String cmd = "_notify-validate";
+	private final String verified = "VERIFIED";
+
+	private final Transport transport = new HttpPost();
 	
-	@SuppressWarnings("unchecked")
-	public IPNNotificationValidation(HttpServletRequest request) {
-		for(Map.Entry<String, String[]> param :  (Set<Map.Entry<String, String[]>>)request.getParameterMap().entrySet()) {
-			nvpReq.put(param.getKey(), param.getValue()[0]);
-		}
+	private final IPNMessage message;
+	
+	public IPNNotificationValidation(IPNMessage message) {
+		this.message = message;
 	}
 
 	public String getCommand() {
 		return cmd;
 	}
 	
-	public Map<String, String> getNVPRequest() {
-		return nvpReq;
-	}
-
 	public String getUrl(PayPalEnvironment environment) {
 		return "https://www." + environment.getUrlModifier() + "paypal.com/cgi-bin/webscr";
+	}
+	
+	public boolean validate(final PayPalEnvironment environment) {
+		StringBuffer nvpString = new StringBuffer("cmd=" + getCommand() + "&");
+
+		final String fullMessage = message.getFullMessage().getValue();
+		nvpString.append(fullMessage.replace("\n", "&"));
+
+		String response = null;
+		try {
+			log.fine("Sending request " + nvpString.toString());
+			log.fine("To URL " + getUrl(environment));
+			response = transport.getResponse(getUrl(environment),
+					nvpString.toString());
+		} catch (MalformedURLException ex) {
+			log.log(Level.SEVERE, null, ex);
+		}
+
+		if (response != null) {
+			log.fine("received response: " + response);
+
+			return response.equals(verified);
+		}
+
+		return false;
 	}
 }
