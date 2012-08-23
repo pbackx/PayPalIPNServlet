@@ -57,12 +57,14 @@ public class IPNValidationServlet extends IPNServlet {
 					// Check for duplicate txn_id 
 					// We can't do this non-ancestor query inside the transaction, so this isn't 100% safe
 					// If you know of a way to fix this, please let me know
-					Objectify ofyNoTxn = ObjectifyService.begin();
-					final int count = ofyNoTxn.query(IPNMessage.class).filter("txnId", message.getTxnId()).count();
-					if(count > 1) {
-						log.severe("duplicate message found with txn_id " + message.getTxnId());
-						resp.setStatus(204); // return in range of 2xx so AppEngine doesn't retry
-						return;
+					if(message.getTxnId() != null && !"".equals(message.getTxnId())) {
+						Objectify ofyNoTxn = ObjectifyService.begin();
+						final int count = ofyNoTxn.query(IPNMessage.class).filter("txnId", message.getTxnId()).count();
+						if(count > 1) {
+							log.severe("duplicate message found with txn_id " + message.getTxnId());
+							resp.setStatus(204); // return in range of 2xx so AppEngine doesn't retry
+							return;
+						}
 					}
 					
 					// validate the message with PayPal
