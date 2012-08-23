@@ -49,7 +49,7 @@ public class IPNValidationServlet extends IPNServlet {
 		
 		try {
 			final long id = Long.parseLong(idStr);
-			dao.doTransaction(new IPNMessageDao.Transactable() {
+			IPNMessageDao.repeatInTransaction(new IPNMessageDao.Transactable() {
 				@Override
 				public void run(IPNMessageDao daot) {
 					final IPNMessage message = daot.ofy().find(IPNMessage.class, id);
