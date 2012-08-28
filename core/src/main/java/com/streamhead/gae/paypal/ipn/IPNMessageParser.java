@@ -75,6 +75,8 @@ public class IPNMessageParser {
 			builder.txnId(value);
 		} else if(name.equals("subscr_id")) {
 			builder.subscrId(value);
+		} else if(name.equals("payer_email")) {
+			builder.payerEmail(value);
 		}
 	}
 

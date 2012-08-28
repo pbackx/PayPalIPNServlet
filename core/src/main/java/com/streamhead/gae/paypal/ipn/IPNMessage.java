@@ -42,6 +42,7 @@ public class IPNMessage implements Serializable {
 	private String itemNumber;
 	private String txnId;
 	private String subscrId;
+	private String payerEmail;
 
 	private IPNMessage() { }
 	
@@ -91,6 +92,10 @@ public class IPNMessage implements Serializable {
 
 	public String getSubscrId() {
 		return subscrId;
+	}
+
+	public String getPayerEmail() {
+		return payerEmail;
 	}
 
 	public static class Builder {
@@ -152,6 +157,11 @@ public class IPNMessage implements Serializable {
 			return this;
 		}
 		
+		public Builder payerEmail(String value) {
+			this.message.payerEmail = value;
+			return this;
+		}
+
 		public IPNMessage build() {
 			return message;
 		}
@@ -186,6 +196,8 @@ public class IPNMessage implements Serializable {
 				+ ((subscrId == null) ? 0 : subscrId.hashCode());
 		result = prime * result
 				+ ((transactionType == null) ? 0 : transactionType.hashCode());
+		result = prime * result
+				+ ((payerEmail == null) ? 0 : payerEmail.hashCode());
 		result = prime * result + ((txnId == null) ? 0 : txnId.hashCode());
 		return result;
 	}
@@ -249,6 +261,11 @@ public class IPNMessage implements Serializable {
 		} else if (!txnId.equals(other.txnId))
 			return false;
 		if (validated != other.validated)
+			return false;
+		if (payerEmail == null) {
+			if (other.payerEmail != null)
+				return false;
+		} else if (!payerEmail.equals(other.payerEmail))
 			return false;
 		return true;
 	}
