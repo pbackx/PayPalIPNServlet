@@ -7,9 +7,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.pow.paypal</groupId>
 	<artifactId>pow-paypal-war</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Powered by Reindeer PayPal standalone WAR</name>
 	<description>This is the most basic IPN servlet you can run. 
@@ -54,12 +52,10 @@
 	<build>
 		<finalName>pow-paypal-war</finalName>
 		<plugins>
-			<!-- The actual maven-gae-plugin. Type "mvn gae:run" to run project, "mvn 
-				gae:deploy" to upload to GAE. -->
 			<plugin>
 				<groupId>net.kindleit</groupId>
 				<artifactId>maven-gae-plugin</artifactId>
-				<version>0.9.2</version>
+				<version>0.9.5</version>
 				<configuration>
 					<serverId>appengine.google.com</serverId>
 					<sdkDir>${gae.home}</sdkDir>
