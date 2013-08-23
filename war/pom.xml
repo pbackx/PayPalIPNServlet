@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.pow.paypal</groupId>
 		<artifactId>pow-paypal</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -42,25 +42,51 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.pow.paypal</groupId>
-			<artifactId>pow-paypal-core</artifactId>
-			<version>${project.version}</version>
+	    <dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-1.0-sdk</artifactId>
+			<version>${gae.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.pow.paypal</groupId>
+		    <artifactId>pow-paypal-core</artifactId>
+		    <version>${project.version}</version>
+		</dependency>	    
 	</dependencies>
-
+	
 	<build>
 		<finalName>pow-paypal-war</finalName>
 		<plugins>
 			<plugin>
-				<groupId>net.kindleit</groupId>
-				<artifactId>maven-gae-plugin</artifactId>
-				<version>0.9.5</version>
+				<groupId>com.google.appengine</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>${gae.version}</version>
 				<configuration>
-					<serverId>appengine.google.com</serverId>
-					<sdkDir>${gae.home}</sdkDir>
+					<port>${gae.port}</port>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+	    <profile>
+			<id>debug</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.google.appengine</groupId>
+						<artifactId>appengine-maven-plugin</artifactId>
+						<version>${gae.version}</version>
+						<configuration>
+							<port>${gae.port}</port>
+							<jvmFlags>
+								<jvmFlag>-Xdebug</jvmFlag>
+								<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag>
+							</jvmFlags>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

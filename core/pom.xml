@@ -3,13 +3,12 @@
 	<parent>
 		<groupId>com.pow.paypal</groupId>
 		<artifactId>pow-paypal</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.pow.paypal</groupId>
 	<artifactId>pow-paypal-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Powered by Reindeer PayPal core</name>
 	<description>Powered by Reindeer is a high-level application framework integrating 
@@ -59,11 +58,21 @@
 			<version>1.1</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin</artifactId>
-			<version>${vaadin.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-server</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiled</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+    		<groupId>com.vaadin</groupId>
+    		<artifactId>vaadin-themes</artifactId>
+            <version>${vaadin.version}</version>
+    	</dependency>
 		
         <dependency>
             <groupId>com.googlecode.objectify</groupId>

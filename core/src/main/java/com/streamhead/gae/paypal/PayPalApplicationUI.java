@@ -20,28 +20,31 @@ import java.util.Date;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.streamhead.gae.paypal.ipn.IPNMessage;
-import com.vaadin.Application;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 
-public class PayPalApplication extends Application {
+public class PayPalApplicationUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 	protected static final PayPalEnvironment environment = PayPalEnvironment.SANDBOX;
 
 	Table ipnTable = new Table("IPN messages"); 
-	Label ipnDetail = new Label("Select message for detail", Label.CONTENT_PREFORMATTED);
+	Label ipnDetail = new Label("Select message for detail", ContentMode.PREFORMATTED);
 	
-	public Window buildMainLayout() {
-		Window mainWindow = new Window("PayPal Test Application");
+	public Component buildMainView() {
+		VerticalLayout layout = new VerticalLayout();
 
-		mainWindow.addComponent(new Label("Environment: " + environment));
+		layout.addComponent(new Label("Environment: " + environment));
 
 		ipnTable.setSizeFull();
 		ipnTable.setSelectable(true);
@@ -49,7 +52,7 @@ public class PayPalApplication extends Application {
 		ipnTable.addContainerProperty("Date", Date.class, null);
 		ipnTable.addContainerProperty("Validated", Boolean.class, Boolean.FALSE);
 		ipnTable.addContainerProperty("Transaction Type", String.class, "");
-		ipnTable.addListener(new ValueChangeListener() {
+		ipnTable.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void valueChange(ValueChangeEvent event) {
@@ -58,11 +61,11 @@ public class PayPalApplication extends Application {
 					ipnDetail.setValue(msg.getFullMessage().getValue());
 			}
 		});
-		mainWindow.addComponent(ipnTable);
+		layout.addComponent(ipnTable);
 		
-		mainWindow.addComponent(ipnDetail);
+		layout.addComponent(ipnDetail);
 		
-		mainWindow.addComponent(new Button("refresh", new ClickListener() {
+		layout.addComponent(new Button("refresh", new ClickListener() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -70,12 +73,12 @@ public class PayPalApplication extends Application {
 			}
 		}));
 
-		return mainWindow;
+		return layout;
 	}
 	
 	@Override
-	public void init() {
-		setMainWindow(buildMainLayout());
+	public void init(VaadinRequest request) {
+		setContent(buildMainView());
 		
 		loadIPNMessages();
 	}

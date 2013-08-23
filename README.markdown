@@ -16,37 +16,22 @@ Feel free to fork this project and improve it. I'd love to see some cooperation 
 Getting started
 ===============
 
-Configure your personal AppEngine settings
-----------------------------
-
-You have to replace the application and version in war/src/main/webapp/WEB-INF/appengine-web.xml with your own before deploying.
-
-
-Configure your Appengine SDK
----------------------------- 
-
-in .m2/settings.xml:
-
-    <settings>
-      <profiles>
-        <profile>
-          <id>gae-config</id>
-          <properties>
-            <gae.home>C:\Java\lib\appengine-java-sdk-1.5.4</gae.home>
-          </properties>
-        </profile>
-      </profiles>
-      <activeProfiles>
-        <activeProfile>gae-config</activeProfile>
-      </activeProfiles>
-    </settings>
-
 Build and run the example application
 -------------------------------------
 
 1. `mvn clean install`
 2. `cd war`
-3. `mvn gae:run`
+3. `mvn appengine:devserver`
+
+
+History
+=======
+
+0.0.2-SNAPSHOT
+--------------
+
+Upgrade to Vaadin 7 and AppEngine 1.8. 
+*important* The Maven AppEngine plugin is now the one officially supported by Google. The plugin requires Maven 3.1.0 or higher, so you may need to upgrade Maven.
 
 
 Using the Library in Your Own Projects
@@ -104,7 +89,7 @@ Adding the Servlets
 To process PayPal IPN messages, the task queue is used. This allows for easy and configurable retries. To properly process IPN messages
 you will need three servlets. Two are part of this packages, one you will need to implement yourself.
 
-The IPNServlet stores incoming IPN messages as is and forwards them to the IPNValidationServlet through a task queue.
+The *IPNServlet* stores incoming IPN messages as is and forwards them to the IPNValidationServlet through a task queue.
 
 	<servlet>
 		<servlet-name>IPNServlet</servlet-name>
@@ -115,7 +100,7 @@ The IPNServlet stores incoming IPN messages as is and forwards them to the IPNVa
 		<url-pattern>/ipn</url-pattern>
 	</servlet-mapping>
 	
-The IPNValidationServlet tries to validate the message. The number and frequency of retries is configured in the queue. After successful
+The *IPNValidationServlet* tries to validate the message. The number and frequency of retries is configured in the queue. After successful
 validation, the servlet starts the processing task.
 
 	<servlet>
@@ -132,7 +117,7 @@ validation, the servlet starts the processing task.
 		<url-pattern>/ipn/validate</url-pattern>
 	</servlet-mapping>
 	
-The processing servlet should be implemented by you. To get you started, this project contains a dummy servlet.
+The *processing servlet* should be implemented by you. To get you started, this project contains a dummy servlet.
  
 	<servlet>
 		<servlet-name>IPNProcessingServlet</servlet-name>
@@ -142,24 +127,10 @@ The processing servlet should be implemented by you. To get you started, this pr
 		<servlet-name>IPNProcessingServlet</servlet-name>
 		<url-pattern>/ipn/process</url-pattern>
 	</servlet-mapping>
-
-
-Maven repository
-================
-
-The current snapshot is hosted on Sonatype's snapshot repository, so if you just want to use the project add this to your pom.xml:
-
-    <repositories>
-		<repository>
-			<id>sonatype-snapshots</id>
-			<name>Sonatype Open Source snapshot repository (for POW and MailJimp)</name>
-			<url>https://oss.sonatype.org/content/groups/public/</url>
-		</repository>
-	</repositories>
-	<dependencies>
-		<dependency>
-			<groupId>com.pow.paypal</groupId>
-			<artifactId>pow-paypal-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-    </dependencies>   
+ 
+ 
+ Maven Repository
+ ================
+ 
+ Currently this project is not released or deployed to a public repository. Please let me know if you'd like that.
+ 

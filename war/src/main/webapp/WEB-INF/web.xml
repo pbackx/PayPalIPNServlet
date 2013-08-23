@@ -36,12 +36,10 @@
 	<servlet>
 		<servlet-name>PayPal Test Application</servlet-name>
 		<servlet-class>
-		com.vaadin.terminal.gwt.server.GAEApplicationServlet</servlet-class>
+		com.vaadin.server.GAEVaadinServlet</servlet-class>
 		<init-param>
-			<description>
-			Vaadin application class to start</description>
-			<param-name>application</param-name>
-			<param-value>com.streamhead.gae.paypal.PayPalApplication</param-value>
+			<param-name>UI</param-name>
+			<param-value>com.streamhead.gae.paypal.PayPalApplicationUI</param-value>
 		</init-param>
 	</servlet>
 	
