@@ -28,6 +28,8 @@ public enum TransactionType {
 	recurring_payment_expired,
 	recurring_payment_profile_created,
 	recurring_payment_skipped,
+	recurring_payment_suspended,
+	recurring_payment_suspended_due_to_max_failed_payment,
 	send_money,
 	subscr_cancel,
 	subscr_eot,
