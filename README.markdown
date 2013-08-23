@@ -30,7 +30,8 @@ History
 0.0.2-SNAPSHOT
 --------------
 
-Upgrade to Vaadin 7 and AppEngine 1.8. 
+Upgrade to Vaadin 7 and AppEngine 1.8.
+ 
 *important* The Maven AppEngine plugin is now the one officially supported by Google. The plugin requires Maven 3.1.0 or higher, so you may need to upgrade Maven.
 
 
@@ -127,10 +128,9 @@ The *processing servlet* should be implemented by you. To get you started, this 
 		<servlet-name>IPNProcessingServlet</servlet-name>
 		<url-pattern>/ipn/process</url-pattern>
 	</servlet-mapping>
+
+
+Maven Repository
+================
  
- 
- Maven Repository
- ================
- 
- Currently this project is not released or deployed to a public repository. Please let me know if you'd like that.
- 
+Currently this project is not released or deployed to a public repository. Please let me know if you'd like that.
