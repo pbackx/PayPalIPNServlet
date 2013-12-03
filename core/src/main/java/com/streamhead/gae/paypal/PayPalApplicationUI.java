@@ -15,10 +15,10 @@
 */
 package com.streamhead.gae.paypal;
 
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
 import java.util.Date;
 
-import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Query;
 import com.streamhead.gae.paypal.ipn.IPNMessage;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -86,8 +86,7 @@ public class PayPalApplicationUI extends UI {
 	private void loadIPNMessages() {
 		ipnTable.removeAllItems();
 
-		Query<IPNMessage> messages = ObjectifyService.begin().query(IPNMessage.class);
-		for(IPNMessage m : messages)
+		for(IPNMessage m : ofy().load().type(IPNMessage.class).list())
 		{
 			ipnTable.addItem(new Object[] { m.getDate(), m.isValidated(), m.getTransactionType().toString() }, m);
 		}

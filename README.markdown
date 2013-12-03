@@ -27,6 +27,13 @@ Build and run the example application
 History
 =======
 
+0.0.3-SNAPSHOT
+--------------
+
+Upgrade to Objectify 4.0rc2
+Minor upgrades for both Vaadin and AppEngine
+
+
 0.0.2-SNAPSHOT
 --------------
 

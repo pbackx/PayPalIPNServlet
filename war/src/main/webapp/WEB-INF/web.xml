@@ -16,6 +16,15 @@
 	    <listener-class>com.streamhead.gae.paypal.ipn.IPNContextListener</listener-class>
 	</listener>
 
+	<filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+	</filter>
+	<filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<servlet>
 		<servlet-name>IPNServlet</servlet-name>
 		<servlet-class>com.streamhead.gae.paypal.ipn.IPNServlet</servlet-class>

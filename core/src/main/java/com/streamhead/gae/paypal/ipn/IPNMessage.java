@@ -19,30 +19,31 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-import javax.persistence.Id;
-
 import com.google.appengine.api.datastore.Text;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.streamhead.gae.paypal.variable.PaymentStatus;
 import com.streamhead.gae.paypal.variable.TransactionType;
 
+@Entity
 public class IPNMessage implements Serializable {
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
-	@Id
-	private Long id;
-	private Date date = new Date();
-	private boolean validated = false;
+	@Id private Long id;
+	@Index private Date date = new Date();
+	@Index private boolean validated = false;
 	private Text fullMessage;
-	private TransactionType transactionType;
-	private PaymentStatus paymentStatus;
-	private String mcGross;
-	private String mcCurrency;
-	private String custom;
-	private String itemNumber;
-	private String txnId;
-	private String subscrId;
-	private String payerEmail;
+	@Index private TransactionType transactionType;
+	@Index private PaymentStatus paymentStatus;
+	@Index private String mcGross;
+	@Index private String mcCurrency;
+	@Index private String custom;
+	@Index private String itemNumber;
+	@Index private String txnId;
+	@Index private String subscrId;
+	@Index private String payerEmail;
 
 	private IPNMessage() { }
 	

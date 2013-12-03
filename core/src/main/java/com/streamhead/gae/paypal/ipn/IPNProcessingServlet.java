@@ -1,5 +1,7 @@
 package com.streamhead.gae.paypal.ipn;
 
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,8 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Key;
 
 public class IPNProcessingServlet extends IPNServlet {
 
@@ -29,8 +30,7 @@ public class IPNProcessingServlet extends IPNServlet {
 		try {
 			final long id = Long.parseLong(idStr);
 
-			final Objectify ofy = ObjectifyService.begin(); 
-			final IPNMessage message = ofy.find(IPNMessage.class, id);
+			final IPNMessage message = ofy().load().key(Key.create(IPNMessage.class, id)).now();
 					
 			//This is where your code goes to handle the IPN message
 			log.fine("now processing message with txn_id " + message.getTxnId());

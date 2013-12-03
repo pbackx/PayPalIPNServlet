@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.pow.paypal</groupId>
 		<artifactId>pow-paypal</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -38,13 +38,6 @@
 		</developer>
 	</developers>
 
-    <repositories>
-        <repository>
-            <id>objectify-appengine</id>
-            <url>http://objectify-appengine.googlecode.com/svn/maven</url>
-        </repository>
-    </repositories>
-  
 	<dependencies>
 		<dependency>
 			<groupId>com.google.appengine</groupId>
@@ -72,14 +65,9 @@
         <dependency>
             <groupId>com.googlecode.objectify</groupId>
             <artifactId>objectify</artifactId>
-            <version>3.0</version>
+            <version>4.0rc2</version>
         </dependency>
         
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jpa_3.0_spec</artifactId>
-			<version>1.1.1</version>
-		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>

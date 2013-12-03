@@ -1,6 +1,7 @@
 package com.streamhead.gae.paypal.ipn;
 
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -12,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.VoidWork;
 import com.streamhead.gae.paypal.PayPalEnvironment;
 
 public class IPNValidationServlet extends IPNServlet {
@@ -49,17 +50,16 @@ public class IPNValidationServlet extends IPNServlet {
 		
 		try {
 			final long id = Long.parseLong(idStr);
-			IPNMessageDao.repeatInTransaction(new IPNMessageDao.Transactable() {
+			ofy().transact(new VoidWork() {
 				@Override
-				public void run(IPNMessageDao daot) {
-					final IPNMessage message = daot.ofy().find(IPNMessage.class, id);
+				public void vrun() {
+					final IPNMessage message = ofy().load().key(Key.create(IPNMessage.class, id)).now();
 					
 					// Check for duplicate txn_id 
 					// We can't do this non-ancestor query inside the transaction, so this isn't 100% safe
 					// If you know of a way to fix this, please let me know
 					if(message.getTxnId() != null && !"".equals(message.getTxnId())) {
-						Objectify ofyNoTxn = ObjectifyService.begin();
-						final int count = ofyNoTxn.query(IPNMessage.class).filter("txnId", message.getTxnId()).count();
+						final int count = ofy().transactionless().load().type(IPNMessage.class).filter("txnId", message.getTxnId()).count();
 						if(count > 1) {
 							log.severe("duplicate message found with txn_id " + message.getTxnId());
 							resp.setStatus(204); // return in range of 2xx so AppEngine doesn't retry
@@ -72,12 +72,12 @@ public class IPNValidationServlet extends IPNServlet {
 					
 					if(validation.validate(environment)) {
 						message.setValidated(true);
-						daot.ofy().put(message);
+						ofy().save().entity(message);
 
 						//add to queue for final processing
 						Queue queue = QueueFactory.getQueue("paypal");
 						queue.add(withUrl(processingTask).param("id", String.valueOf(message.getId())));
-					}
+					}					
 				}
 			});
 		} catch (NumberFormatException e) {
